@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { TUser, UserModel } from './users/user.interface';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const productSchema = new Schema({
   productName: { type: String, required: [true, 'Product name is required'] },
@@ -74,6 +76,24 @@ const userSchema = new Schema<TUser, UserModel>({
   orders: {
     type: [productSchema],
   },
+});
+
+// pre save middleware/hook
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  // Hashing password and save into DB
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  console.log(this, 'post hook : we saved the data');
+  next();
 });
 
 // Creating a custom static method
