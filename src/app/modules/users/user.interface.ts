@@ -8,7 +8,7 @@ export interface TProducts {
 export interface TUser {
   userId: number;
   username: string;
-  password: string;
+  password?: string;
   fullName: {
     firstName: string;
     lastName: string;

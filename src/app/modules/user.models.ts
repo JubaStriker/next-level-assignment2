@@ -23,7 +23,6 @@ const userSchema = new Schema<TUser, UserModel>({
   },
   password: {
     type: String,
-    required: [true, 'Username Id is required'],
   },
   fullName: {
     firstName: {
@@ -83,15 +82,19 @@ userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   // Hashing password and save into DB
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds),
-  );
+  if (user.password !== undefined) {
+    user.password = await bcrypt.hash(
+      user.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+  }
   next();
 });
 
 userSchema.post('save', function (doc, next) {
+  delete doc['password'];
   doc.password = '';
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   console.log(this, 'post hook : we saved the data');
   next();
 });
