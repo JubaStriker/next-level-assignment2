@@ -95,13 +95,13 @@ userSchema.post('save', function (doc, next) {
   delete doc['password'];
   doc.password = '';
   // eslint-disable-next-line @typescript-eslint/no-this-alias
-  console.log(this, 'post hook : we saved the data');
+
   next();
 });
 
 // Creating a custom static method
 userSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await User.findOne({ id });
+  const existingUser = await User.findOne({ userId: id });
   return existingUser;
 };
 
