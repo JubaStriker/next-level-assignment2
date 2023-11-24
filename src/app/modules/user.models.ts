@@ -46,7 +46,7 @@ const userSchema = new Schema<TUser>({
     type: [String],
     validate: {
       validator: function (value: string[]) {
-        return value.length < 2;
+        return value.length <= 2;
       },
       message: 'Hobbies cannot be more than 2',
     },
@@ -64,6 +64,9 @@ const userSchema = new Schema<TUser>({
       type: String,
       required: [true, 'Country is required'],
     },
+  },
+  orders: {
+    type: [String],
   },
 });
 
