@@ -1,5 +1,5 @@
 import { User } from '../user.models';
-import { TUser } from './user.interface';
+import { TProducts, TUser } from './user.interface';
 
 const createUserIntoDb = async (userData: TUser) => {
   if (await User.isUserExists(userData.userId)) {
@@ -22,11 +22,14 @@ const deleteUserFromDb = async (id: number) => {
   if (!(await User.isUserExists(id))) {
     throw new Error(`User does not exist`);
   }
-
   const data = await User.isUserExists(id);
   console.log(data);
   const result = await User.updateOne({ userId: id }, { isDeleted: true });
   return result;
+};
+
+const addProduct = async (id: number, product: TProducts) => {
+  console.log(id, product);
 };
 
 export const UserServices = {
@@ -34,4 +37,5 @@ export const UserServices = {
   getAllUsersFromDb,
   getSingleUserFromDb,
   deleteUserFromDb,
+  addProduct,
 };
