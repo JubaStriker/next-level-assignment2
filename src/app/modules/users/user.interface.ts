@@ -1,3 +1,10 @@
+import { Model } from 'mongoose';
+
+export interface TProducts {
+  productName: string;
+  price: number;
+  quantity: number;
+}
 export interface TUser {
   userId: number;
   username: string;
@@ -15,5 +22,9 @@ export interface TUser {
     city: string;
     country: string;
   };
-  orders?: string[];
+  orders?: TProducts[];
+}
+
+export interface UserModel extends Model<TUser> {
+  isUserExists(id: number): Promise<TUser | null>;
 }
