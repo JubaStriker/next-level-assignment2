@@ -23,6 +23,7 @@ export interface TUser {
     country: string;
   };
   orders?: TProducts[];
+  isDeleted?: boolean;
 }
 
 export interface UserModel extends Model<TUser> {

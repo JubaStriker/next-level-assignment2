@@ -75,6 +75,10 @@ const userSchema = new Schema<TUser, UserModel>({
   orders: {
     type: [productSchema],
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // pre save middleware/hook
@@ -96,6 +100,16 @@ userSchema.post('save', function (doc, next) {
   doc.password = '';
   // eslint-disable-next-line @typescript-eslint/no-this-alias
 
+  next();
+});
+
+userSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+userSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
   next();
 });
 

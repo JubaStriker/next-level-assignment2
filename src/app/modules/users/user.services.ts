@@ -25,7 +25,7 @@ const deleteUserFromDb = async (id: number) => {
 
   const data = await User.isUserExists(id);
   console.log(data);
-  const result = await User.deleteOne({ userId: id });
+  const result = await User.updateOne({ userId: id }, { isDeleted: true });
   return result;
 };
 
