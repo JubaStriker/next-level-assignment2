@@ -1,12 +1,12 @@
 import { model, Schema } from 'mongoose';
-import { TUser, UserModel } from './users/user.interface';
+import { TProducts, TUser, UserModel } from './users/user.interface';
 import bcrypt from 'bcrypt';
 import config from '../config';
 
-const productSchema = new Schema({
+const productSchema = new Schema<TProducts>({
   productName: { type: String, required: [true, 'Product name is required'] },
-  price: { type: String, required: [true, 'Price is required'] },
-  quantity: { type: String, required: [true, 'Quantity is required'] },
+  price: { type: Number, required: [true, 'Price is required'] },
+  quantity: { type: Number, required: [true, 'Quantity is required'] },
 });
 
 const userSchema = new Schema<TUser, UserModel>({

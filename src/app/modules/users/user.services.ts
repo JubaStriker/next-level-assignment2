@@ -29,7 +29,11 @@ const deleteUserFromDb = async (id: number) => {
 };
 
 const addProduct = async (id: number, product: TProducts) => {
-  console.log(id, product);
+  const result = await User.updateOne(
+    { userId: id },
+    { $push: { orders: product } },
+  );
+  return result;
 };
 
 export const UserServices = {
