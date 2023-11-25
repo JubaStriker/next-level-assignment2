@@ -15,7 +15,6 @@ const createUser = async (req: Request, res: Response) => {
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    console.log(e);
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
