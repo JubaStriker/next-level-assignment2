@@ -28,7 +28,6 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (e) {
-        console.log(e);
         res.status(500).json({
             success: false,
             message: 'Something went wrong',
@@ -61,7 +60,7 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const id = req.params.userId;
+        const id = parseInt(req.params.userId);
         const result = yield user_services_1.UserServices.getSingleUserFromDb(id);
         res.status(200).json({
             success: true,
@@ -84,10 +83,11 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const id = parseInt(req.params.userId);
         const result = yield user_services_1.UserServices.deleteUserFromDb(id);
+        console.log(result);
         res.status(200).json({
             success: true,
             message: 'User deleted successfully',
-            data: result,
+            data: null,
         });
     }
     catch (e) {
@@ -145,6 +145,30 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+const getTotalPrice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.userId);
+        const result = yield user_services_1.UserServices.getTotalPrice(id);
+        res.status(200).json({
+            success: true,
+            message: 'Total price calculated successfully!',
+            data: {
+                totalPrice: result,
+            },
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: {
+                code: 404,
+                description: e.message,
+            },
+        });
+    }
+});
 exports.UserControllers = {
     createUser,
     getAllUsers,
@@ -152,4 +176,5 @@ exports.UserControllers = {
     deleteUser,
     addProduct,
     getProducts,
+    getTotalPrice,
 };

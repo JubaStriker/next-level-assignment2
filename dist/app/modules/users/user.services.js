@@ -23,6 +23,9 @@ const getAllUsersFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const getSingleUserFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!(yield user_models_1.User.isUserExists(id))) {
+        throw new Error(`User does not exist`);
+    }
     const result = yield user_models_1.User.findOne({ userId: id });
     return result;
 });
@@ -47,6 +50,19 @@ const getProducts = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_models_1.User.find({ userId: id });
     return result[0].orders;
 });
+const getTotalPrice = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!(yield user_models_1.User.isUserExists(id))) {
+        throw new Error(`User does not exist`);
+    }
+    const result = yield user_models_1.User.find({ userId: id });
+    const orders = result[0].orders;
+    // eslint-disable-next-line prefer-const
+    let totalPrice = 0;
+    orders === null || orders === void 0 ? void 0 : orders.map(order => {
+        totalPrice = totalPrice + order.price * order.quantity;
+    });
+    return totalPrice;
+});
 exports.UserServices = {
     createUserIntoDb,
     getAllUsersFromDb,
@@ -54,4 +70,5 @@ exports.UserServices = {
     deleteUserFromDb,
     addProduct,
     getProducts,
+    getTotalPrice,
 };
