@@ -11,14 +11,17 @@ const createUserIntoDb = async (userData: TUser) => {
 };
 
 const getAllUsersFromDb = async () => {
-  const result = await User.find({}, { password: 0 });
+  const result = await User.find({}, { password: 0, isDeleted: 0 });
   return result;
 };
 const getSingleUserFromDb = async (id: number) => {
   if (!(await User.isUserExists(id))) {
     throw new Error(`User does not exist`);
   }
-  const result = await User.findOne({ userId: id });
+  const result = await User.findOne(
+    { userId: id },
+    { password: 0, isDeleted: 0 },
+  );
   return result;
 };
 

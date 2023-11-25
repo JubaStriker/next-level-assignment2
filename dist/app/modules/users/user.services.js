@@ -20,14 +20,14 @@ const createUserIntoDb = (userData) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 const getAllUsersFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_models_1.User.find({}, { password: 0 });
+    const result = yield user_models_1.User.find({}, { password: 0, isDeleted: 0 });
     return result;
 });
 const getSingleUserFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(yield user_models_1.User.isUserExists(id))) {
         throw new Error(`User does not exist`);
     }
-    const result = yield user_models_1.User.findOne({ userId: id });
+    const result = yield user_models_1.User.findOne({ userId: id }, { password: 0, isDeleted: 0 });
     return result;
 });
 const deleteUserFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
