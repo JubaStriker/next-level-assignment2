@@ -45,6 +45,23 @@ const getProducts = async (id: number) => {
   return result[0].orders;
 };
 
+const getTotalPrice = async (id: number): Promise<number> => {
+  if (!(await User.isUserExists(id))) {
+    throw new Error(`User does not exist`);
+  }
+  const result = await User.find({ userId: id });
+  const orders = result[0].orders;
+
+  // eslint-disable-next-line prefer-const
+  let totalPrice: number = 0;
+
+  orders?.map(order => {
+    totalPrice = totalPrice + order.price * order.quantity;
+  });
+
+  return totalPrice;
+};
+
 export const UserServices = {
   createUserIntoDb,
   getAllUsersFromDb,
@@ -52,4 +69,5 @@ export const UserServices = {
   deleteUserFromDb,
   addProduct,
   getProducts,
+  getTotalPrice,
 };

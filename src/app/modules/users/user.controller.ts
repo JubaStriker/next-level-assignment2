@@ -133,6 +133,30 @@ const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+const getTotalPrice = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.userId);
+    const result = await UserServices.getTotalPrice(id);
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: {
+        totalPrice: result,
+      },
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went wrong',
+      error: {
+        code: 404,
+        description: e.message,
+      },
+    });
+  }
+};
+
 export const UserControllers = {
   createUser,
   getAllUsers,
@@ -140,4 +164,5 @@ export const UserControllers = {
   deleteUser,
   addProduct,
   getProducts,
+  getTotalPrice,
 };

@@ -15,4 +15,6 @@ router.put('/:userId/orders', UserControllers.addProduct);
 
 router.get('/:userId/orders', UserControllers.getProducts);
 
+router.get('/:userId/orders/total-price', UserControllers.getTotalPrice);
+
 export const UserRoute = router;
