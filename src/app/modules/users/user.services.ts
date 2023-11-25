@@ -6,11 +6,12 @@ const createUserIntoDb = async (userData: TUser) => {
     throw new Error(`User already exists`);
   }
   const result = await User.create(userData);
+  delete result.password;
   return result;
 };
 
 const getAllUsersFromDb = async () => {
-  const result = await User.find();
+  const result = await User.find({}, { password: 0 });
   return result;
 };
 const getSingleUserFromDb = async (id: number) => {
