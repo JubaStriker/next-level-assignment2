@@ -16,10 +16,11 @@ const createUserIntoDb = (userData) => __awaiter(void 0, void 0, void 0, functio
         throw new Error(`User already exists`);
     }
     const result = yield user_models_1.User.create(userData);
+    delete result.password;
     return result;
 });
 const getAllUsersFromDb = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_models_1.User.find();
+    const result = yield user_models_1.User.find({}, { password: 0 });
     return result;
 });
 const getSingleUserFromDb = (id) => __awaiter(void 0, void 0, void 0, function* () {
