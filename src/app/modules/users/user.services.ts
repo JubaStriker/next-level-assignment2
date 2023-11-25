@@ -13,7 +13,10 @@ const getAllUsersFromDb = async () => {
   const result = await User.find();
   return result;
 };
-const getSingleUserFromDb = async (id: string) => {
+const getSingleUserFromDb = async (id: number) => {
+  if (!(await User.isUserExists(id))) {
+    throw new Error(`User does not exist`);
+  }
   const result = await User.findOne({ userId: id });
   return result;
 };

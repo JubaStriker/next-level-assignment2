@@ -48,7 +48,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const id = req.params.userId;
+    const id = parseInt(req.params.userId);
     const result = await UserServices.getSingleUserFromDb(id);
     res.status(200).json({
       success: true,
@@ -71,10 +71,11 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.userId);
     const result = await UserServices.deleteUserFromDb(id);
+    console.log(result);
     res.status(200).json({
       success: true,
       message: 'User deleted successfully',
-      data: result,
+      data: null,
     });
   } catch (e) {
     res.status(500).json({
