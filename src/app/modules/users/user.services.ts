@@ -6,7 +6,6 @@ const createUserIntoDb = async (userData: TUser) => {
     throw new Error(`User already exists`);
   }
   const result = await User.create(userData);
-  delete result.password;
   return result;
 };
 
