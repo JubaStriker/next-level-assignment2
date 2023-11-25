@@ -27,5 +27,6 @@ const UserValidationSchema = zod_1.z.object({
         quantity: zod_1.z.number(),
     }))
         .optional(),
+    isDeleted: zod_1.z.boolean().optional(),
 });
 exports.default = UserValidationSchema;

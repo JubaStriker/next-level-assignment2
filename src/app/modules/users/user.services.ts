@@ -22,18 +22,27 @@ const deleteUserFromDb = async (id: number) => {
   if (!(await User.isUserExists(id))) {
     throw new Error(`User does not exist`);
   }
-  const data = await User.isUserExists(id);
-  console.log(data);
   const result = await User.updateOne({ userId: id }, { isDeleted: true });
   return result;
 };
 
 const addProduct = async (id: number, product: TProducts) => {
+  if (!(await User.isUserExists(id))) {
+    throw new Error(`User does not exist`);
+  }
   const result = await User.updateOne(
     { userId: id },
     { $push: { orders: product } },
   );
   return result;
+};
+
+const getProducts = async (id: number) => {
+  if (!(await User.isUserExists(id))) {
+    throw new Error(`User does not exist`);
+  }
+  const result = await User.find({ userId: id });
+  return result[0].orders;
 };
 
 export const UserServices = {
@@ -42,4 +51,5 @@ export const UserServices = {
   getSingleUserFromDb,
   deleteUserFromDb,
   addProduct,
+  getProducts,
 };

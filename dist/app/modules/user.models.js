@@ -18,8 +18,8 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const config_1 = __importDefault(require("../config"));
 const productSchema = new mongoose_1.Schema({
     productName: { type: String, required: [true, 'Product name is required'] },
-    price: { type: String, required: [true, 'Price is required'] },
-    quantity: { type: String, required: [true, 'Quantity is required'] },
+    price: { type: Number, required: [true, 'Price is required'] },
+    quantity: { type: Number, required: [true, 'Quantity is required'] },
 });
 const userSchema = new mongoose_1.Schema({
     userId: {
@@ -87,6 +87,10 @@ const userSchema = new mongoose_1.Schema({
     orders: {
         type: [productSchema],
     },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
 });
 // pre save middleware/hook
 userSchema.pre('save', function (next) {
@@ -104,13 +108,20 @@ userSchema.post('save', function (doc, next) {
     delete doc['password'];
     doc.password = '';
     // eslint-disable-next-line @typescript-eslint/no-this-alias
-    // console.log(this, 'post hook : we saved the data');
+    next();
+});
+userSchema.pre('find', function (next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+userSchema.pre('findOne', function (next) {
+    this.find({ isDeleted: { $ne: true } });
     next();
 });
 // Creating a custom static method
 userSchema.statics.isUserExists = function (id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const existingUser = yield exports.User.findOne({ id });
+        const existingUser = yield exports.User.findOne({ userId: id });
         return existingUser;
     });
 };

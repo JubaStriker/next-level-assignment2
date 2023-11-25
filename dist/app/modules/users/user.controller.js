@@ -20,14 +20,10 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const userData = req.body.user;
         const zodParsedData = user_validation_1.default.parse(userData);
         const result = yield user_services_1.UserServices.createUserIntoDb(zodParsedData);
-        const modifiedData = Object.assign({}, result);
-        console.log(modifiedData.password);
-        delete modifiedData._doc['password'];
-        // console.log('result2', modifiedData);
         res.status(200).json({
             success: true,
             message: 'User created successfully',
-            data: modifiedData._doc,
+            data: result,
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
@@ -35,11 +31,125 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.log(e);
         res.status(500).json({
             success: false,
-            message: e.message || 'Something went wrong',
-            error: e,
+            message: 'Something went wrong',
+            error: {
+                code: 404,
+                description: 'Something went wrong!',
+            },
+        });
+    }
+});
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield user_services_1.UserServices.getAllUsersFromDb();
+        res.status(200).json({
+            success: true,
+            message: 'Users data fetched successfully',
+            data: result,
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = req.params.userId;
+        const result = yield user_services_1.UserServices.getSingleUserFromDb(id);
+        res.status(200).json({
+            success: true,
+            message: 'User data fetched successfully',
+            data: result,
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.userId);
+        const result = yield user_services_1.UserServices.deleteUserFromDb(id);
+        res.status(200).json({
+            success: true,
+            message: 'User deleted successfully',
+            data: result,
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.userId);
+        const productData = req.body;
+        const result = yield user_services_1.UserServices.addProduct(id, productData);
+        res.status(200).json({
+            success: true,
+            message: 'Order created successfully!',
+            data: result,
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'User not found',
+            error: {
+                code: 404,
+                description: 'User not found!',
+            },
+        });
+    }
+});
+const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.userId);
+        const result = yield user_services_1.UserServices.getProducts(id);
+        res.status(200).json({
+            success: true,
+            message: 'Order fetched successfully!',
+            data: result,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }
+    catch (e) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: {
+                code: 404,
+                description: e.message,
+            },
         });
     }
 });
 exports.UserControllers = {
     createUser,
+    getAllUsers,
+    getSingleUser,
+    deleteUser,
+    addProduct,
+    getProducts,
 };
