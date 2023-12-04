@@ -4,7 +4,7 @@ import UserValidationSchema from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const userData = req.body.user;
+    const userData = req.body;
     const zodParsedData = UserValidationSchema.parse(userData);
     const result = await UserServices.createUserIntoDb(zodParsedData);
 
@@ -17,7 +17,7 @@ const createUser = async (req: Request, res: Response) => {
   } catch (e: any) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: e.message || 'Something went wrong',
       error: {
         code: 404,
         description: 'Something went wrong!',
