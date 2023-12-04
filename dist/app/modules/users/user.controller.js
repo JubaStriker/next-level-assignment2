@@ -17,7 +17,7 @@ const user_services_1 = require("./user.services");
 const user_validation_1 = __importDefault(require("./user.validation"));
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userData = req.body.user;
+        const userData = req.body;
         const zodParsedData = user_validation_1.default.parse(userData);
         const result = yield user_services_1.UserServices.createUserIntoDb(zodParsedData);
         res.status(200).json({
@@ -30,7 +30,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (e) {
         res.status(500).json({
             success: false,
-            message: 'Something went wrong',
+            message: e.message || 'Something went wrong',
             error: {
                 code: 404,
                 description: 'Something went wrong!',
@@ -67,11 +67,12 @@ const getSingleUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             message: 'User data fetched successfully',
             data: result,
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
     catch (e) {
         res.status(500).json({
             success: false,
-            message: 'User not found',
+            message: e.message || 'User not found',
             error: {
                 code: 404,
                 description: 'User not found!',
