@@ -55,10 +55,11 @@ const getSingleUser = async (req: Request, res: Response) => {
       message: 'User data fetched successfully',
       data: result,
     });
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
+      message: e.message || 'User not found',
       error: {
         code: 404,
         description: 'User not found!',
