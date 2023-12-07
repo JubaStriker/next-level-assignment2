@@ -51,12 +51,6 @@ const userSchema = new Schema<TUser, UserModel>({
   },
   hobbies: {
     type: [String],
-    validate: {
-      validator: function (value: string[]) {
-        return value.length <= 2;
-      },
-      message: 'Hobbies cannot be more than 2',
-    },
   },
   address: {
     street: {

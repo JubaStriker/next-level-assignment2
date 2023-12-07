@@ -63,12 +63,6 @@ const userSchema = new mongoose_1.Schema({
     },
     hobbies: {
         type: [String],
-        validate: {
-            validator: function (value) {
-                return value.length <= 2;
-            },
-            message: 'Hobbies cannot be more than 2',
-        },
     },
     address: {
         street: {
